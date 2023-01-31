@@ -1,0 +1,67 @@
+/*
+Theme Name: Portfolios
+Theme URI:
+Author: Fran Pardo
+Author URI: http://www.fran-pardo.com
+Description: Plantilla basica
+Version: 1.0
+*/
+a.active{
+    color:blue;
+}
+.section-title h2::after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: #34b7a7;
+    left: calc(50% - 25px);
+}
+.section-title{
+    text-align:center;
+    padding-bottom: 30px;
+}
+.section-title h2 {
+    padding-bottom: 30px;
+}
+
+div.navegacion ul>li>a:before {
+    content: "";
+    position: relative;
+    height: 2px;
+    bottom: -25px;
+    background-color: #34b7a7;
+    visibility: hidden;
+    width: 0px;
+    transition: all 0.3s ease-in-out 0s;
+    display:block;
+}
+div.navegacion ul>li>a:hover:before, div.navegacion ul>li:hover>a:before, div.navegacion .active:before{
+    visibility: visible;
+    display:block;
+    width: 25px;
+}
+.jumbotron{
+    margin-bottom: 30px;
+}
+
+#hero .btn-about, .button-contact button[type=submit] {
+    background: #34b7a7;
+    border: 0;
+    padding: 10px 30px 12px 30px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+    margin-top: 15px;
+}
+#hero .btn-about a{
+    text-decoration: none;
+}
+
+#hero {
+    width: 100%;
+    height: 100vh;
+    background: url(./assets/img/hero-bg.jpg) top right;
+    background-size: cover;
+}
