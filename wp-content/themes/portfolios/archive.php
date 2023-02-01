@@ -1,6 +1,10 @@
 <?php
+get_header();
+?>
 
 
-echo "archivo";
 
+<?php
+
+get_footer();
 ?>

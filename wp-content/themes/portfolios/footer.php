@@ -3,7 +3,6 @@
 wp_footer();
 
 ?>
-</div>
 <footer class="footer mt-auto py-3">
 <div class="container navegacion">
 	<div class="py-3 mb-4 border-top">
