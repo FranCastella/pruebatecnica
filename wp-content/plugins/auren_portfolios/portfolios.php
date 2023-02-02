@@ -145,6 +145,9 @@ class Portfolios{
         }
         return $input;
     }
+    function sanitizeCustomHTML($input){
+        return $input;
+    }
 
     // salida HTML lista portfolios
   function get_portfolios(){
@@ -170,6 +173,7 @@ class Portfolios{
 
     $args = array(
         'post_type'=>'portfolio',
+        'posts_per_page' => 100,
         'order' => $orden
     );
 

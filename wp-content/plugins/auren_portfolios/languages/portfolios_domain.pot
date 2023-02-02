@@ -1,0 +1,75 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Portfolios\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-02 08:34+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.3; wp-6.1.1\n"
+"X-Domain: portfolios_domain"
+
+#: portfolios.php:50
+msgid "Ajustes"
+msgstr ""
+
+#: portfolios.php:50
+msgid "Ajustes personalizables"
+msgstr ""
+
+#: portfolios.php:60
+msgid "Añadir filtro JS"
+msgstr ""
+
+#: portfolios.php:43
+msgid "Categorías"
+msgstr ""
+
+#: portfolios.php:63
+msgid "Categorías a añadir en el filtro (separar por una coma)"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Crea una nueva tipología (Portfolio) con sus propias categorías y ajustes, "
+"además crea un bloque personalizado para mostrar los elementos."
+msgstr ""
+
+#: portfolios.php:66
+msgid "Customizar clase de cada elemento (HTML)<br/> Ej: col-md-3 portfolio"
+msgstr ""
+
+#: portfolios.php:142
+msgid "El siguiente campo no se encuentra entre las categorias: "
+msgstr ""
+
+#: portfolios.php:126
+msgid "Error al introducir el campo de filtro"
+msgstr ""
+
+#: portfolios.php:118
+msgid "Error al introducir el campo de orden"
+msgstr ""
+
+#. Author of the plugin
+msgid "Fran Pardo"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://www.fran-pardo.com"
+msgstr ""
+
+#: portfolios.php:57
+msgid "Orden de los portfolios por fecha"
+msgstr ""
+
+#. Name of the plugin
+msgid "Portfolios"
+msgstr ""
