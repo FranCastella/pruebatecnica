@@ -1,10 +1,12 @@
 <?php
 /*
 Plugin Name: Portfolios
-Description: Crea una nueva tipología (Portfolio) y crea bloques para mostrar tanto listado de elementos, detalles de elementos como modificación de datos.
+Description: Crea una nueva tipología (Portfolio) con sus propias categorías y ajustes, además crea un bloque personalizado para mostrar los elementos.
 Version: 1.0
 Author: Fran Pardo
 Author URI: http://www.fran-pardo.com
+Text Domain: portfolios_domain
+Domain Path: /languages
 */
 
 
@@ -17,7 +19,13 @@ class Portfolios{
         //Ajustes plugin
         add_action('admin_menu' , array($this, 'portfolios_pagina_ajustes'));
         add_action('admin_init', array($this, 'ajustes'));
+        //inicia languages
+        add_action('init', array($this, 'languages'));
     }
+
+    function languages() {
+        load_plugin_textdomain('portfolios_domain', false, dirname(plugin_basename(__FILE__)) . '/languages');
+      }
 
     function portfolio_post_type(){
         register_post_type('portfolio',
@@ -32,30 +40,30 @@ class Portfolios{
               'supports'=> array( 'title', 'editor', 'author', 'thumbnail','excerpt','custom-fields','comments','taxonomy')
           ));
         //Añadir categorias personalizadas solo para portfolio (no usar por defecto)
-        register_taxonomy('portfolios_category','portfolio',array('hierarchical' => true, 'label' => 'Categorías', 'query_var'=> true, 'rewrite'=> true,'show_admin_column'=>true));
+        register_taxonomy('portfolios_category','portfolio',array('hierarchical' => true, 'label' => __('Categorías', 'portfolios_domain'), 'query_var'=> true, 'rewrite'=> true,'show_admin_column'=>true));
       }
     
     /* AJUSTES */
 
     //Añade los ajustes dentro del propio menu portfolios
     function portfolios_pagina_ajustes() {
-    add_submenu_page('edit.php?post_type=portfolio', 'Custom Settings', 'Ajustes', 'edit_posts', 'portfolios-pagina-ajustes', array($this,'nuestroHTML'));
+    add_submenu_page('edit.php?post_type=portfolio', __('Ajustes personalizables', 'portfolios_domain'), __('Ajustes', 'portfolios_domain'), 'edit_posts', 'portfolios-pagina-ajustes', array($this,'nuestroHTML'));
     }
 
     function ajustes(){
         settings_errors(); // esto es añadido automaticamente en el menu ajustes pero no en los demás, sirve para mostrar mensajes de sanitización
         add_settings_section('portfolios_first_section', null, null,'portfolios-pagina-ajustes');
 
-        add_settings_field('portfolio_orden','Orden de los portfolios por fecha',array($this, 'ajustes_orden_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
+        add_settings_field('portfolio_orden',__('Orden de los portfolios por fecha', 'portfolios_domain'),array($this, 'ajustes_orden_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
         register_setting('portfoliosplugin','portfolios_orden',array('sanitize_callback' => array($this, 'sanitizeOrden'), 'default' => '0'));
 
-        add_settings_field('portfolio_filtro','Añadir filtro JS',array($this, 'ajustes_filtro_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
+        add_settings_field('portfolio_filtro',__('Añadir filtro JS', 'portfolios_domain'),array($this, 'ajustes_filtro_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
         register_setting('portfoliosplugin','portfolios_filtro',array('sanitize_callback' => array($this, 'sanitizeFiltro'), 'default' => '0'));
         
-        add_settings_field('portfolios_categorias','Categorías a añadir en el filtro (separar por una coma)',array($this, 'ajustes_categorias_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
+        add_settings_field('portfolios_categorias',__('Categorías a añadir en el filtro (separar por una coma)', 'portfolios_domain'),array($this, 'ajustes_categorias_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
         register_setting('portfoliosplugin','portfolios_categorias',array('sanitize_callback' => array($this, 'sanitizeTextArea'), 'default' => ''));
 
-        add_settings_field('portfolios_customHTML','Customizar clase de cada elemento (HTML)<br/> Ej: col-md-3 portfolio',array($this, 'ajustes_custom_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
+        add_settings_field('portfolios_customHTML',__('Customizar clase de cada elemento (HTML)<br/> Ej: col-md-3 portfolio', 'portfolios_domain'),array($this, 'ajustes_custom_HTML'),'portfolios-pagina-ajustes','portfolios_first_section');
         register_setting('portfoliosplugin','portfolios_customHTML',array('sanitize_callback' => array($this, 'sanitizeCustomHTML'), 'default' => 'col-md-6'));
     }
 
@@ -107,7 +115,7 @@ class Portfolios{
     function sanitizeOrden($input){
         if($input !='0' AND $input !='1'){
             //1 setting asociado 2 codigo error(no importa) 3 mensaje de error
-            add_settings_error('portfolios_orden','portfolios_orden_error','Solo puedes elegir esas 2');
+            add_settings_error('portfolios_orden','portfolios_orden_error',__('Error al introducir el campo de orden', 'portfolios_domain'));
             return get_option('portfolios_orden');
         }
         return $input;
@@ -115,7 +123,7 @@ class Portfolios{
     function sanitizeFiltro($input){
         if($input !='0' AND $input !='1'){
             //1 setting asociado 2 codigo error(no importa) 3 mensaje de error
-            add_settings_error('portfolios_filtro','portfolios_orden_error','Solo dos opciones en el filtro.');
+            add_settings_error('portfolios_filtro','portfolios_orden_error',__('Error al introducir el campo de filtro', 'portfolios_domain'));
             return get_option('portfolios_filtro');
         }
         return $input;
@@ -131,63 +139,14 @@ class Portfolios{
 
         foreach($lista as $list){ //comprobamos si las categorias que ponemos existen
             if(!in_array($list,$lista_categorias_string)){
-                add_settings_error('portfolios_categorias','portfolios_orden_error','El siguiente campo no se encuentra entre las categorias: '.$list);
+                add_settings_error('portfolios_categorias','portfolios_orden_error',__('El siguiente campo no se encuentra entre las categorias: ', 'portfolios_domain').$list);
                 return get_option('portfolios_categorias');
             }
         }
         return $input;
     }
-    function sanitizeCustomHTML($input){
-        return $input;
-    }
 
-
-        /* BASE DE DATOS */
-
-      /* function get_portfolios($params){
-
-    $option = get_option('portfolios_orden');
-
-    if(isset($params['numero_por_pagina']) ? $numero_por_pagina = $params['numero_por_pagina'] : $numero_por_pagina=3);
-
-    //construye el listado con paginación
-  
-    $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
-    $args = array(
-        'post_type'=>'portfolio',
-        'posts_per_page' => $numero_por_pagina,
-        'paged' => $paged,
-    );
-
-
-
-    $query = new WP_Query($args);
-
-    while( $query->have_posts() ){
-        if ( $query->have_posts() ); $query->the_post(); ?>
-        <div>
-            <h1><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></h1>
-            <p><?php the_excerpt();?></p>
-            <span><?php echo get_the_category_list()?></span>
-            <hr>
-        </div>
-        <?php
-    } 
-
-    echo paginate_links( array(
-        'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
-        'total'        => $query->max_num_pages,
-        'current'      => max( 1, get_query_var( 'paged' ) ),
-        'format'       => '?paged=%#%',
-        'show_all'     => false,
-        'type'         => 'plain',
-
-    ) );
-    wp_reset_postdata(); 
-
- 
-  }*/
-
+    // salida HTML lista portfolios
   function get_portfolios(){
     //recogemos opciones del plugin
     $orden =     (get_option('portfolios_orden')==1) ? 'ASC': 'DESC';
@@ -203,17 +162,14 @@ class Portfolios{
         echo "<div>";
             echo "<button type='button' id='portfolios_ALL'>".__('Todos','pfdomain')."</button>";
         foreach($categorias_array as $key => $value){
-            echo "<button type='button' id='portfolios_".$value."'>".$value."</button>";
+            echo "<button type='button' id='portfolios_".$value."' class='portfolios_filtro_boton boton_filtrado'>".$value."</button>";
         }
         echo "</div>";
 
     }
 
-    $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
     $args = array(
         'post_type'=>'portfolio',
-        'posts_per_page' => 100,
-        'paged' => $paged,
         'order' => $orden
     );
 
@@ -230,7 +186,7 @@ class Portfolios{
         <?php } if($lista_categorias) {
             $categorias="<div class='portfolios_cat'>";
             foreach($lista_categorias as $key){
-               $categorias.="<span class".$key->name.">".$key->name."</span> ";
+               $categorias.="<span class='portfolio_".$key->name."'>".$key->name."</span> ";
             }
             
             echo $categorias.="</div>";
